@@ -189,13 +189,19 @@ print("=" * 60)
 # Plot
 # ======================================================
 
-plt.figure(figsize=(8, 5))
+report_dir = Path(config.paths.reports_dir)
+
+report_dir.mkdir(parents=True, exist_ok=True)
+
+plot_path = report_dir / "interest_rate_validation.png"
+
+plt.figure(figsize=(8,5))
 
 plt.plot(
     rates * 100,
     predicted_reserves,
     linewidth=3,
-    label="PINN",
+    label="PINN"
 )
 
 plt.plot(
@@ -203,14 +209,17 @@ plt.plot(
     true_reserves,
     "--",
     linewidth=3,
-    label="Thiele Solver",
+    label="Thiele Solver"
 )
 
 plt.xlabel("Interest Rate (%)")
 plt.ylabel("Reserve (£)")
-plt.title("Reserve vs Interest Rate")
+plt.title("PINN vs Thiele Solver")
 plt.grid(alpha=0.3)
 plt.legend()
 
 plt.tight_layout()
-plt.show()
+
+plt.savefig(plot_path, dpi=300)
+
+print(f"\nPlot saved to {plot_path}")
